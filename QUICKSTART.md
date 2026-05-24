@@ -20,6 +20,12 @@ Switch to Google:
 powershell -ExecutionPolicy Bypass -File .\scripts\set-dns.ps1 google
 ```
 
+Switch to Quad9:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\set-dns.ps1 quad9
+```
+
 Restore DHCP/default DNS:
 
 ```powershell
@@ -52,6 +58,12 @@ Switch to Google:
 
 ```bash
 sudo ./scripts/set-dns.sh google
+```
+
+Switch to Quad9:
+
+```bash
+sudo ./scripts/set-dns.sh quad9
 ```
 
 Restore DHCP/default DNS:

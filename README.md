@@ -26,63 +26,22 @@ This tool helps you quickly test whether the problem is caused by DNS filtering,
 | `quad9` | `9.9.9.9`, `149.112.112.112` |
 | `auto` | Restore DHCP/default DNS |
 
-You can add more custom rows
+## Platforms
 
-## Quick usage
+- Windows 10 / Windows 11 with PowerShell 5.1+ via [scripts/set-dns.ps1](scripts\set-dns.ps1)
+- Linux systems managed by NetworkManager via [scripts/set-dns.sh](scripts\set-dns.sh)
 
-Windows PowerShell as Administrator:
+## Documentation
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\set-dns.ps1 cloudflare
-```
+- For step-by-step commands, see [QUICKSTART.md](QUICKSTART.md).
+- Windows and Linux both support `cloudflare`, `google`, `quad9`, and `auto`.
+- `auto` restores DHCP/default DNS instead of forcing a public resolver.
 
-Linux with `sudo` on a NetworkManager-managed system:
+## How it works
 
-```bash
-sudo ./scripts/set-dns.sh cloudflare
-```
-
-The Linux script also supports named parameter usage:
-
-```bash
-sudo ./scripts/set-dns.sh --provider cloudflare
-```
-
-## Restore provider/router DNS
-
-If your DNS normally comes from DHCP, your router, or your ISP, restore it with:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\set-dns.ps1 auto
-```
-
-or on Linux:
-
-```bash
-sudo ./scripts/set-dns.sh auto
-```
-
-On Windows this uses:
-
-```powershell
-Set-DnsClientServerAddress -ResetServerAddresses
-```
-
-On Linux it removes the explicit DNS override from the active NetworkManager connection and re-enables automatic DNS from DHCP or the connection's default resolver source.
-
-## Verify current DNS settings
-
-Windows:
-
-```powershell
-Get-DnsClientServerAddress -AddressFamily IPv4
-```
-
-Linux:
-
-```bash
-nmcli device show | grep -E 'GENERAL.DEVICE|IP4.DNS'
-```
+- On Windows, the script updates active physical adapters and resets them back to DHCP/default DNS when `auto` is selected.
+- On Linux, the script updates active NetworkManager-managed `ethernet` and `wifi` devices and removes explicit DNS overrides when `auto` is selected.
+- After a successful change, each script attempts to flush the local DNS cache.
 
 ## Safety notes
 
@@ -99,29 +58,7 @@ nmcli device show | grep -E 'GENERAL.DEVICE|IP4.DNS'
 
 ## Troubleshooting
 
-If the Windows script says no active adapters were found, check adapter status:
-
-```powershell
-Get-NetAdapter
-```
-
-If the Linux script says no active interfaces were found, inspect NetworkManager state:
-
-```bash
-nmcli device status
-nmcli connection show --active
-```
-
-If the website still fails after switching DNS, test with a VPN or mobile hotspot. If it works there, the issue is likely still in the current network path, router, ISP, antivirus, or browser security configuration.
-
-To manually flush DNS cache on Windows:
-
-```powershell
-Clear-DnsClientCache
-```
-
-On Linux with `systemd-resolved`:
-
-```bash
-sudo resolvectl flush-caches
-```
+- If no adapters or interfaces are detected, verify that the target network device is up and managed by the local OS networking stack.
+- If Linux changes do not apply, confirm the system is using NetworkManager and that `nmcli` is available.
+- If the website still fails after switching DNS, test with a VPN or mobile hotspot. If it works there, the issue is likely still in the current network path, router, ISP, antivirus, or browser security configuration.
+- For exact operational commands, manual verification steps, and cache flush commands, use [QUICKSTART.md](QUICKSTART.md).
