@@ -5,6 +5,7 @@ Small utility for quickly switching DNS settings between known public DNS provid
 ## Why this exists
 
 Sometimes a website does not open because DNS traffic is filtered, sinkholed, or redirected by an ISP, router, antivirus product, corporate network, or security DNS provider.
+I'm saying Hello! to ISP Astra with their `interesting` DNS `193.93.216.55` ([see details here](images/mim-certificate.png))
 
 A common symptom is a browser warning like:
 
