@@ -27,6 +27,8 @@ This tool helps you quickly test whether the problem is caused by DNS filtering,
 | `quad9` | `9.9.9.9`, `149.112.112.112` |
 | `auto` | Restore DHCP/default DNS |
 
+You can add more custom DNS as you need
+
 ## Platforms
 
 - Windows 10 / Windows 11 with PowerShell 5.1+ via [scripts/set-dns.ps1](scripts\set-dns.ps1)
